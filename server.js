@@ -1,5 +1,6 @@
 const express = require('express');
 const request = require('request');
+const buildUrl = require('build-url');
 
 const port = process.env.PORT || 3000;
 
@@ -19,16 +20,25 @@ app.get('/', (req, res) => {
 });
 
 app.get('/recipes', (req, res) => {
+  const queryStrings = req.query;
+  const url = buildUrl('http://www.recipepuppy.com/api/', {
+    queryParams: queryStrings
+  })
+  console.log(url);
   request({
-    url: `http://www.recipepuppy.com/api/?i=`,
+    url: url,
     json: true
   }, (error, response, body) => {
     if (error) {
       res.send({
+        'results': [],
         'errorMessage': 'Unable to handle request'
       });
     } else if (response.statusCode === 400) {
-      console.log('Unable to fetch weather.');
+      res.send({
+        'results': [],
+        'errorMessage': 'Unable to fetch recipes'
+      });
     } else if (response.statusCode === 200) {
       res.send(body);
     }
