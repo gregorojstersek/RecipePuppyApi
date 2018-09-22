@@ -1,6 +1,8 @@
 const express = require('express');
 const request = require('request');
 
+const port = process.env.PORT || 3000;
+
 const app = express();
 
 app.use(express.static(__dirname + '/view'));
@@ -33,4 +35,6 @@ app.get('/recipes', (req, res) => {
   });
 });
 
-app.listen(3000);
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}`);
+});
