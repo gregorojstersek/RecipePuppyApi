@@ -31,16 +31,14 @@ app.get('/recipes', (req, res) => {
   }, (error, response, body) => {
     if (error) {
       res.send({
-        'results': [],
         'errorMessage': 'Unable to handle request'
       });
     } else if (response.statusCode === 400) {
       res.send({
-        'results': [],
         'errorMessage': 'Unable to fetch recipes'
       });
     } else if (response.statusCode === 200) {
-      res.send(body);
+      res.send(body.results);
     }
   });
 });
